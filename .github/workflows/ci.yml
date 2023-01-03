@@ -1,0 +1,21 @@
+name: 'Captain CI example'
+on:
+  pull_request:
+  push:
+    paths-ignore:
+      - README.md
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: rwx-research/setup-captain@v1
+      - uses: actions/setup-go@v3
+        with:
+          go-version: "1.19"
+      - run: go build ./...
+      - run: |
+          captain run --suite-id captain-examples-ginkgo --test-results report.json -- \
+            ginkgo --keep-going --json-report ./report.json ./...
+        env:
+          RWX_ACCESS_TOKEN: ${{ secrets.RWX_ACCESS_TOKEN }}

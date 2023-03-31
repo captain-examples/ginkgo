@@ -1,0 +1,5 @@
+test-suites:
+  captain-examples-ginkgo:
+    command: ginkgo --keep-going --json-report ./report.json ./...
+    results:
+      path: report.json
